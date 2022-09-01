@@ -1,0 +1,22 @@
+{
+  "name": "wrappedtoken",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/estlosan/WrappedToken.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/estlosan/WrappedToken/issues"
+  },
+  "homepage": "https://github.com/estlosan/WrappedToken#readme"
+}
