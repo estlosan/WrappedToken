@@ -49,4 +49,31 @@ contract('WrappedToken', ([owner, user, ...accounts]) => {
             )
         })
     })
+    describe(('Unwrap Token'), () => {
+        beforeEach(('Mint ERC20'), async() => {
+            const mintAmount = ONE_ETHER;
+            const depositAmount = ONE_ETHER;
+            await erc20Token.mint(owner, mintAmount, { from: owner });
+            await erc20Token.mint(user, mintAmount, { from: owner });
+            await erc20Token.approve(erc777Token.address, depositAmount, { from: owner });
+            await erc777Token.deposit(depositAmount, { from: owner });
+            await erc20Token.approve(erc777Token.address, depositAmount, { from: user });
+            await erc777Token.deposit(depositAmount, { from: user })
+        })
+        it(('Should allow unwrap token'), async() => {
+            const unwrapAmount = ONE_ETHER;
+            const ownerERC20Balance = await erc20Token.balanceOf(owner);
+            const ownerERC777Balance = await erc777Token.balanceOf(owner);
+            await erc777Token.withdraw(unwrapAmount, { from: owner });
+            (await erc20Token.balanceOf(owner)).should.be.bignumber.equal(ownerERC20Balance.add(unwrapAmount));
+            (await erc777Token.balanceOf(owner)).should.be.bignumber.equal(ownerERC777Balance.sub(unwrapAmount));
+        })
+        it(('Should deny wrap tokens if amount > owner tokens'), async() => {
+            const unwrapAmount = ONE_ETHER.mul(new BN('3'));
+            await expectRevert(
+                erc777Token.deposit(unwrapAmount, { from: user }),
+                msgErrors.insuficientAllowance
+            )
+        })
+    })
 })

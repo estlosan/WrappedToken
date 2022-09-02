@@ -13,6 +13,11 @@ contract ERC777Token is ERC777 {
         uint amount
     );
 
+    event TokensUnwrapped(
+        address indexed sender,
+        uint amount
+    );
+
     IERC20 public tokenAddress;
 
     constructor (IERC20 _tokenAddress) ERC777("ERC777Token", "777", new address[](0)) {
@@ -31,5 +36,18 @@ contract ERC777Token is ERC777 {
         _mint(sender, amount, "", "");
 
         emit TokensWrapped(sender, amount);
+    }
+
+    function withdraw(uint amount) external {
+        require(address(tokenAddress) != address(0), "Token address not set");
+        
+        address sender = msg.sender;
+
+        burn(amount, "");
+
+        (bool success, ) = address(tokenAddress).call(abi.encodeWithSignature("transfer(address,uint256)", sender, amount));
+        require(success);
+
+        emit TokensUnwrapped(sender, amount);
     }
 }
