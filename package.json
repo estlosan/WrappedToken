@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/estlosan/WrappedToken/issues"
   },
-  "homepage": "https://github.com/estlosan/WrappedToken#readme"
+  "homepage": "https://github.com/estlosan/WrappedToken#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3",
+    "@openzeppelin/test-helpers": "^0.5.16",
+    "should": "^13.2.3"
+  }
 }
