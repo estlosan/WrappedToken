@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC777/ERC777.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract ERC777Token is ERC777 {
+contract ERC777Token is ERC777, Ownable {
     uint256 constant public maxSupply = 1000000000000000000000000000; // 1 thousand millions of tokens
     uint256 constant public preAssigned = 300000000000000000000000000; // 300 hundred millions of tokens
 
@@ -49,5 +50,10 @@ contract ERC777Token is ERC777 {
         require(success);
 
         emit TokensUnwrapped(sender, amount);
+    }
+
+    function setToken(IERC20 newToken) external onlyOwner {
+        require(address(newToken) != address(0), "Address cannot be 0");
+        tokenAddress = IERC20(newToken);
     }
 }

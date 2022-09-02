@@ -24,6 +24,17 @@ contract('WrappedToken', ([owner, user, ...accounts]) => {
         })
     })
     describe('Set functions', () => {
+        it(('Should allow change token address with owner'), async() => {
+            await erc777Token.setToken(accounts[0], { from: owner });
+            (await erc777Token.tokenAddress()).should.be.equal(accounts[0]);
+        })
+        it(('Should deny change token address with user'), async() => {
+            await expectRevert(
+                erc777Token.setToken(accounts[0], { from: user }),
+                msgErrors.ownable
+            )
+
+        })
     })
     describe('Wrap Token', () => {
         beforeEach(('Mint ERC20'), async() => {
