@@ -25,7 +25,7 @@ contract ERC777Token is ERC777 {
         _mint(msg.sender, preAssigned, "", "");
     }
 
-    function deposit(uint amount) external {
+    function wrapToken(uint amount) external {
         IERC20 token = tokenAddress;
         require(address(token) != address(0), "Token address not set");
 
@@ -38,7 +38,7 @@ contract ERC777Token is ERC777 {
         emit TokensWrapped(sender, amount);
     }
 
-    function withdraw(uint amount) external {
+    function unwrapToken(uint amount) external {
         require(address(tokenAddress) != address(0), "Token address not set");
         
         address sender = msg.sender;
